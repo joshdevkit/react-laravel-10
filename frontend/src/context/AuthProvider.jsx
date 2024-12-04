@@ -35,8 +35,14 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('access_token');
     };
 
+
+    const baseUrl = () => {
+        return "http://127.0.0.1:8000";
+    };
+
+
     return (
-        <AuthContext.Provider value={{ user, access_token, login, logout }}>
+        <AuthContext.Provider value={{ user, access_token, login, logout, baseUrl }}>
             {children}
         </AuthContext.Provider>
     );

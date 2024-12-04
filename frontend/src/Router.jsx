@@ -5,6 +5,8 @@ import App from './App';
 import Register from './pages/Auth/Register';
 import Dashboard from './components/_auth/Dashboard';
 
+import Edit from './pages/Profile/Edit';
+
 const RouterComponent = () => {
     const { user, setUser } = useAuth();
     const [loading, setLoading] = useState(true);
@@ -29,6 +31,10 @@ const RouterComponent = () => {
                 <Route
                     path="/home"
                     element={user ? <Dashboard /> : <Navigate to="/" />}
+                />
+                <Route
+                    path="/profile"
+                    element={user ? <Edit /> : <Navigate to="/" />}
                 />
             </Routes>
         </Router>
