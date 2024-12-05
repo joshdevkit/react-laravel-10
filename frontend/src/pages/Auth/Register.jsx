@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Card from '../../components/Card';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import instance from '../../axios';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -12,6 +12,7 @@ const Register = () => {
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [error, setError] = useState('');
     const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -22,21 +23,25 @@ const Register = () => {
             return;
         }
 
+        setIsSubmitting(true);
+
         try {
-            const response = await axios.post('http://localhost:8000/api/register', {
+            await instance.post('/register', {
                 name,
                 email,
                 password,
                 password_confirmation: passwordConfirmation,
             });
-            navigate('/');  // Redirect after successful registration
+            navigate('/');
         } catch (err) {
             if (err.response && err.response.data.errors) {
-                setErrors(err.response.data.errors);  // Handle validation errors
+                setErrors(err.response.data.errors);
             } else {
-                setError('Registration failed. Please try again.');  // Generic error message
+                setError('Registration failed. Please try again.');
             }
             console.error('Register error:', err);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -82,7 +87,9 @@ const Register = () => {
                         placeholder="Confirm your password"
                         error={errors.password_confirmation}
                     />
-                    <Button type="submit">Register</Button>
+                    <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? 'Registering Account...' : 'Register'}
+                    </Button>
                 </form>
                 <p className="mt-4 text-center">
                     Already have an account? <Link to="/" className="text-blue-500">Sign in</Link>

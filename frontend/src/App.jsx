@@ -46,7 +46,7 @@ function App() {
 
     return (
         <div className="flex justify-center items-center h-screen bg-gray-200">
-            <Card className="w-full max-w-md">
+            <Card className="w-full max-w-sm">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Signin to Start your session.</h2>
                 {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 <form onSubmit={handleSubmit}>

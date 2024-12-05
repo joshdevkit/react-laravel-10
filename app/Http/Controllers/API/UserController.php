@@ -28,7 +28,6 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
         ]);
 
         try {
@@ -36,12 +35,8 @@ class UserController extends Controller
              * @var App\Models\User
              */
             $user = Auth::user();
-
             $user->name = $request->input('name');
-            $user->email = $request->input('email');
-
             $user->save();
-
             return response()->json([
                 'message' => 'Profile updated successfully!',
                 'user' => $user,
@@ -58,6 +53,8 @@ class UserController extends Controller
     {
         $request->validate([
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10000',
+        ], [
+            'avatar.required' => 'Please Select Image to Update Avatar'
         ]);
 
         $user = $request->user();
